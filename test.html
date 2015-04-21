@@ -1,0 +1,30 @@
+<!doctype html>
+<html ng-app="testGenders">
+  <head>
+    <title>Test Gender Field</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+  </head>
+  <body ng-controller="testController">
+    <div class="container">
+      <form>
+        <h2>Select</h2>
+        <div class="form-group">
+          <label>Gender</label>
+
+          <gender-field select-classes="'form-control'" ng-model="vm.gender" use-source="genders"></gender-field>
+        </div>
+        <h2>With Bootstrap.js</h2>
+        <div class="form-group">
+          <label>Gender</label>
+
+          <gender-field ng-model="vm.gender" with-bootstrap="true" with-bootstrap-js="true" use-source="genders" scrollable-height="'200px'"></gender-field>
+        </div>
+      </form>
+    </div>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="gender-field.js"></script>
+    <script type="text/javascript" src="test.js"></script>
+  </body>
+</html>

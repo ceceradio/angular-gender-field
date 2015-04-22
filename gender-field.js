@@ -109,10 +109,10 @@
             }
         },
         template: 
-            '<select ng-model="data.selectValue" class="{{selectClasses}}" ng-if="!withBootstrap">'
+            '<select ng-model="data.selectValue" class="{{selectClasses}}" ng-if="!(withBootstrap || withBootstrapJs)">'
             +'<option ng-repeat="gender in genders" value="{{gender}}" ng-selected="data.selectValue==gender">{{gender}}</option>'
             +'</select>'
-            +'<div ng-if="withBootstrap" class="dropdown"><button class="btn btn-default dropdown-toggle" id="{{buttonId}}" type="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()">{{ngModel}}<span class="caret"></span></button>'
+            +'<div ng-if="withBootstrap || withBootstrapJs" class="dropdown"><button class="btn btn-default dropdown-toggle" id="{{buttonId}}" type="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()">{{ngModel}}<span class="caret"></span></button>'
             +'<div class="dropdown-backdrop" ng-show="isOpen()" ng-click="toggleDropdown()"></div>'
             +'<ul aria-labelledby="{{buttonId}}" ng-style="getScrollStyle()" class="dropdown-menu" role="menu" aria-labelledby="genderDropdown">'
             +'<li ng-repeat="gender in genders" role="presentation"><a style="padding-left:0.3em" role="menuitem" ng-click="select(gender)" tabindex="-1"><span ng-show="isSelected(gender)" class="glyphicon glyphicon-ok pull-left" aria-hidden="true"></span><span ng-style="getStyle(gender)">{{gender}}</span></a></li>'

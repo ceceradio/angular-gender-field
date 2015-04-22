@@ -3,6 +3,8 @@ Directive for angular forms to allow for easy entry of gender. You're probably a
 
 The directive comes built-in with genders from [satsukitv/genders](https://github.com/satsukitv/genders)
 
+[Check out the demo on jsfiddle](https://jsfiddle.net/satsukitv/mb6tmf3q/)
+
 ## How To Use
 * Include the script in your html
 ```html

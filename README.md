@@ -5,6 +5,22 @@ The directive comes built-in with genders from [satsukitv/genders](https://githu
 
 [Check out the demo on jsfiddle](https://jsfiddle.net/satsukitv/mb6tmf3q/)
 
+## How To Install
+
+#### With Bower
+
+`bower install angular-gender-field`
+
+#### Manually
+
+* [Download the repo](https://github.com/bower/bower.json-spec/archive/master.zip)
+* Include gender-field.js an accessible location
+* Requires:
+** AngularJS
+* Optional:
+** Bootstrap
+** jQuery (for dropdown.js behavior)
+
 ## How To Use
 * Include the script in your html
 ```html

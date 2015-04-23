@@ -1,7 +1,7 @@
 {
   "name": "Angular Gender Field",
   "main": "gender-field.js",
-  "version": "0.0.1",
+  "version": "0.1.0-beta",
   "homepage": "https://github.com/satsukitv/angular-gender-field",
   "authors": [
     "Charlie Wagner <me@satsuki.tv>"

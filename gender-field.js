@@ -1,29 +1,29 @@
 (function() {
     var app = angular.module('gender-field', []);
-    app.directive('genderField', function($document) {
+    app.directive('genderField', function($document, $timeout) {
       return {
         restrict: 'E',
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            selectClasses: '=',
-            withBootstrap: '=',
-            withBootstrapJs: '=',
-            useSource: '=',
-            buttonId: '=',
-            scrollableHeight: '='
+            useTextField: '=?', // TODO document
+            selectClasses: '=?',
+            withBootstrap: '=?',
+            withBootstrapJs: '=?',
+            useSource: '=?',
+            buttonId: '=?',
+            allowSearching: '=?', // TODO document
+            scrollableHeight: '=?'
         },
         link: function (scope, element, attrs) {
-            scope.toggleDropdown = function() {
-                if (scope.withBootstrapJs===true)
+            scope.toggleDropdown = function(force) {
+                if (scope.withBootstrapJs===true && !force)
                     return;
-                angular.element(element[0].querySelector('div.dropdown')).toggleClass("open");
+                angular.element(element[0].querySelector('.dropdown-toggle')).parent().toggleClass("open");
             };
 
             scope.isOpen = function() {
-                if (scope.withBootstrapJs===true)
-                    return;
-                angular.element(element[0].querySelector('div.dropdown')).hasClass("open");
+                return angular.element(element[0].querySelector('.dropdown-toggle')).parent().hasClass("open");
             };
             scope.isSelected = function(gender) {
                 return gender == scope.ngModel;
@@ -45,19 +45,66 @@
                     return { 'height': scope.scrollableHeight, 'overflow-y': 'scroll' };
                 return {};
             }
+            scope.bootstrapTyping = function() {
+                if (!scope.isOpen() && scope.allowSearching) {
+                    scope.toggleDropdown(true);
+                    scope.searching = true;
+                }
+            };
+            scope.bootstrapInputBlur = function() {
+                $timeout(function() {
+                    scope.searching = false;
+                    if (scope.isOpen()) {
+                        scope.toggleDropdown(true);
+                    }
+                },250);
+            }
+            scope.bootstrapInputKeydown = function($event) {
+                if (scope.isOpen() && $event.keyCode==40) {
+                    $event.preventDefault()
+                    $event.stopPropagation()
+                    // TODO programmatically get dropdown arrow key control going.
+                }
+            }
+            scope.bootstrapSelectKeydown = function($event) {
+                // TODO try to implement key control when not using bootstrap.js
+            }
+            scope.partialMatch = function(gender) {
+                return gender.toLowerCase().indexOf(scope.data.selectValue.toLowerCase()) > -1;
+            }
+            scope.$watch('data.selectValue', function() {
+                if (scope.data.selectValue == "Other" && scope.useTextField == 'onOther') {
+                    scope.useTextField = true;
+                    $timeout(function() {
+                        element[0].querySelector('input').focus();
+                        element[0].querySelector('input').select();
+                    }, 40);   
+                }
+                scope.ngModel = scope.data.selectValue;
+            });
+            scope.$watch('ngModel', function() {
+                scope.data.selectValue = scope.ngModel;
+            })
         },
         controller: function ($scope, $http) {
-            $scope.data = {selectValue: $scope.ngModel};
-            $scope.$watch('data.selectValue', function() {
-                $scope.ngModel = $scope.data.selectValue;
-            });
-            $scope.$watch('ngModel', function() {
-                $scope.data.selectValue = $scope.ngModel;
-            })
-            $scope.genders = [];
-            if (typeof $scope.buttonId === "undefined") {
+            if (typeof $scope.useTextField === "undefined")
+                $scope.useTextField = "onOther";
+            if (typeof $scope.selectClasses === "undefined")
+                $scope.selectClasses = "";
+            if (typeof $scope.withBootstrap === "undefined")
+                $scope.withBootstrap = false;
+            if (typeof $scope.withBootstrapJs === "undefined")
+                $scope.withBootstrapJs = false;
+            if (typeof $scope.allowSearching === "undefined")
+                $scope.allowSearching = true;
+            if (typeof $scope.buttonId === "undefined")
                 $scope.buttonId = "genderDropdownButton"+Math.floor(Math.random()*999);
-            }
+            $scope.genders = [];
+            $scope.data = {selectValue: $scope.ngModel};
+
+
+            
+
             if ($scope.useSource) {
                 if (Array.isArray($scope.useSource)) {
                     $scope.genders = $scope.useSource;
@@ -109,14 +156,14 @@
             }
         },
         template: 
-            '<select ng-model="data.selectValue" class="{{selectClasses}}" ng-if="!(withBootstrap || withBootstrapJs)">'
+            '<select ng-model="data.selectValue" class="{{selectClasses}}" ng-if="!(withBootstrap || withBootstrapJs)" ng-show="useTextField!==true">'
             +'<option ng-repeat="gender in genders" value="{{gender}}" ng-selected="data.selectValue==gender">{{gender}}</option>'
             +'</select>'
-            +'<div ng-if="withBootstrap || withBootstrapJs" class="dropdown"><button class="btn btn-default dropdown-toggle" id="{{buttonId}}" type="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()">{{ngModel}}<span class="caret"></span></button>'
-            +'<div class="dropdown-backdrop" ng-show="isOpen()" ng-click="toggleDropdown()"></div>'
-            +'<ul aria-labelledby="{{buttonId}}" ng-style="getScrollStyle()" class="dropdown-menu" role="menu" aria-labelledby="genderDropdown">'
-            +'<li ng-repeat="gender in genders" role="presentation"><a style="padding-left:0.3em" role="menuitem" ng-click="select(gender)" tabindex="-1"><span ng-show="isSelected(gender)" class="glyphicon glyphicon-ok pull-left" aria-hidden="true"></span><span ng-style="getStyle(gender)">{{gender}}</span></a></li>'
-            +'</ul></div>'
+            +'<input class="{{selectClasses}}" ng-model="data.selectValue" ng-if="!(withBootstrap || withBootstrapJs)" ng-show="useTextField===true"/>'
+            +'<div ng-if="withBootstrap || withBootstrapJs" class="input-group"><div class="input-group-btn"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()">Select <span class="caret"></span></button>'
+            +'<ul aria-labelledby="{{buttonId}}" class="dropdown-menu" role="menu">'
+            +'<li ng-keydown="bootstrapSelectKeydown($event)" ng-show="!searching || (searching && partialMatch(gender))" ng-repeat="gender in genders" role="presentation"><a style="padding-left:0.3em" role="button" ng-click="select(gender)" tabindex="-1"><span ng-show="isSelected(gender)" class="glyphicon glyphicon-ok pull-left" aria-hidden="true"></span><span ng-style="getStyle(gender)">{{gender}}</span></a></li>'
+            +'</ul></div><input type="text" ng-keydown="bootstrapInputKeydown($event)" ng-blur="bootstrapInputBlur()" ng-change="bootstrapTyping()" class="form-control" ng-model="data.selectValue" aria-label="Gender"></div>'
       };
     })
 })();

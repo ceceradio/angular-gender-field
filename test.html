@@ -10,15 +10,14 @@
         <h2>Select</h2>
         <div class="form-group">
           <label>Gender</label>
-
-          <gender-field select-classes="'form-control'" ng-model="vm.gender" use-source="genders"></gender-field>
+          <gender-field select-classes="'form-control'" ng-model="vm.gender"></gender-field>
         </div>
         <h2>With Bootstrap.js</h2>
         <div class="form-group">
           <label>Gender</label>
-
-          <gender-field ng-model="vm.gender" with-bootstrap="true" with-bootstrap-js="true" use-source="genders" scrollable-height="'200px'"></gender-field>
+          <gender-field ng-model="vm.gender" with-bootstrap="true" with-bootstrap-js="true" scrollable-height="'200px'"></gender-field>
         </div>
+        <pre>user.gender: {{vm.gender}}</pre>
       </form>
     </div>
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>

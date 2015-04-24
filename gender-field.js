@@ -12,7 +12,7 @@
             withBootstrapJs: '=?',
             useSource: '=?',
             buttonId: '=?',
-            allowSearching: '=?', // TODO document
+            useSearching: '=?', // TODO document
             scrollableHeight: '=?'
         },
         link: function (scope, element, attrs) {
@@ -46,7 +46,7 @@
                 return {};
             }
             scope.bootstrapTyping = function() {
-                if (!scope.isOpen() && scope.allowSearching) {
+                if (!scope.isOpen() && scope.useSearching) {
                     scope.toggleDropdown(true);
                     scope.searching = true;
                 }
@@ -95,8 +95,8 @@
                 $scope.withBootstrap = false;
             if (typeof $scope.withBootstrapJs === "undefined")
                 $scope.withBootstrapJs = false;
-            if (typeof $scope.allowSearching === "undefined")
-                $scope.allowSearching = true;
+            if (typeof $scope.useSearching === "undefined")
+                $scope.useSearching = true;
             if (typeof $scope.buttonId === "undefined")
                 $scope.buttonId = "genderDropdownButton"+Math.floor(Math.random()*999);
             $scope.genders = [];

@@ -15,11 +15,8 @@ The directive comes built-in with genders from [satsukitv/genders](https://githu
 
 * [Download the repo](https://github.com/bower/bower.json-spec/archive/master.zip)
 * Include gender-field.js an accessible location
-* Requires:
-** AngularJS
-* Optional:
-** Bootstrap
-** jQuery (for dropdown.js behavior)
+* Requires: AngularJS
+* Optional: Bootstrap, jQuery (for dropdown.js behavior)
 
 ## How To Use
 * Include the script in your html
@@ -53,12 +50,14 @@ In some ways it definitely is! What this module plans to address is improving th
 
 ## Options
 * `ngModel`: Bind the value of the dropdown to a javascript variable.
+* `useTextField`: Default behavior is 'onOther' which shows a text field for the `<select>` functionality when "Other" is selected. Use "false" to disable the text field completely for `<select>` functionality. Use "true" to use a textbox by default. (Note: This field does not effect bootstrap functionality.)
 * `selectClasses`: Applies the result of this expression to the `class` attribute of the `<select>` element if used.
-* `withBootstrap`: Indicates that bootstrap.css is being used, and to use a bootstrap dropdown instead of a `<select>` element.
+* `withBootstrap`: Indicates that bootstrap.css is being used, and to use a bootstrap dropdown instead of a `<select>` element. Uses some simple built-in javascript behavior to mock dropdown.js behavior.
 * `withBootstrapJs`: Same as `withBootstrap` except dropdown behavior is delegated to bootstrap.js/dropdown.js.
 * `useSource`: Can either be an array, or url to a json array source file whose contents are the strings that should be used for genders. Optional if using the built-in genders from [satsukitv/genders](https://github.com/satsukitv/genders).
 * `buttonId`: If you need to designate an `id` for the `<button>` used in the bootstrap template, this is where you'll do it it.
 * `scrollableHeight`: Limits the height of the dropdown for bootstrap styling, and adds scrolling behavior to the dropdown.
+* `useSearching`: Default (true) is to allow typing to open the dropdown and filter the options by what's been typed so far. Setting to false will disable this functionality.
 
 ## Bootstrap Integration
 The directive can integrate with bootstrap as a `<select>` field or as a bootstrap dropdown.

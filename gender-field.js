@@ -17,6 +17,8 @@
         },
         link: function (scope, element, attrs) {
             scope.toggleDropdown = function(force) {
+                if (!scope.isOpen()) 
+                    scope.searching = false;
                 if (scope.withBootstrapJs===true && !force)
                     return;
                 angular.element(element[0].querySelector('.dropdown-toggle')).parent().toggleClass("open");
@@ -52,6 +54,9 @@
                 }
             };
             scope.bootstrapInputBlur = function() {
+                if (scope.cancelBlur) {
+                    return (scope.cancelBlur = false);
+                }
                 $timeout(function() {
                     scope.searching = false;
                     if (scope.isOpen()) {
@@ -61,13 +66,20 @@
             }
             scope.bootstrapInputKeydown = function($event) {
                 if (scope.isOpen() && $event.keyCode==40) {
-                    $event.preventDefault()
-                    $event.stopPropagation()
+                    if (scope.withBootstrapJs) {
+                        var result= $(element[0]).find('[role="menu"]');
+                        var bsEvent = { which: $event.which, type: "keydown.bs.dropdown.data-api"};
+                        scope.cancelBlur = true;
+                        result.trigger(bsEvent);
+                    }
                     // TODO programmatically get dropdown arrow key control going.
                 }
             }
-            scope.bootstrapSelectKeydown = function($event) {
-                // TODO try to implement key control when not using bootstrap.js
+            scope.bootstrapSelectKeydown = function($event, gender) {
+                console.log($event);
+                if ($event.which == 13 || $event.which == 32) {
+                    scope.select(gender);
+                }
             }
             scope.partialMatch = function(gender) {
                 return gender.toLowerCase().indexOf(scope.data.selectValue.toLowerCase()) > -1;
@@ -162,7 +174,7 @@
             +'<input class="{{selectClasses}}" ng-model="data.selectValue" ng-if="!(withBootstrap || withBootstrapJs)" ng-show="useTextField===true"/>'
             +'<div ng-if="withBootstrap || withBootstrapJs" class="input-group"><div class="input-group-btn"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()">Select <span class="caret"></span></button>'
             +'<ul aria-labelledby="{{buttonId}}" class="dropdown-menu" role="menu">'
-            +'<li ng-keydown="bootstrapSelectKeydown($event)" ng-show="!searching || (searching && partialMatch(gender))" ng-repeat="gender in genders" role="presentation"><a style="padding-left:0.3em" role="button" ng-click="select(gender)" tabindex="-1"><span ng-show="isSelected(gender)" class="glyphicon glyphicon-ok pull-left" aria-hidden="true"></span><span ng-style="getStyle(gender)">{{gender}}</span></a></li>'
+            +'<li ng-keydown="bootstrapSelectKeydown($event, gender)" ng-show="!searching || (searching && partialMatch(gender))" ng-repeat="gender in genders" role="presentation"><a style="padding-left:0.3em" role="button" ng-click="select(gender)" tabindex="-1"><span ng-show="isSelected(gender)" class="glyphicon glyphicon-ok pull-left" aria-hidden="true"></span><span ng-style="getStyle(gender)">{{gender}}</span></a></li>'
             +'</ul></div><input type="text" ng-keydown="bootstrapInputKeydown($event)" ng-blur="bootstrapInputBlur()" ng-change="bootstrapTyping()" class="form-control" ng-model="data.selectValue" aria-label="Gender"></div>'
       };
     })

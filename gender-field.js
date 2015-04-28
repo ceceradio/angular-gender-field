@@ -208,7 +208,7 @@
             +'</select>'
             +'<input ng-class="{{selectClasses}}" ng-model="data.selectValue" ng-if="!(withBootstrap || withBootstrapJs)" ng-show="useTextField===true"/>'
             +'<div ng-if="withBootstrap || withBootstrapJs" class="input-group"><div class="input-group-btn"><button type="button" class="btn btn-default dropdown-toggle" id="{{buttonId}}" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()" ng-keydown="bootstrapButtonKeydown($event)">Select <span class="caret"></span></button>'
-            +'<ul aria-labelledby="{{buttonId}}" class="dropdown-menu" role="menu">'
+            +'<ul aria-labelledby="{{buttonId}}" class="dropdown-menu" role="menu" ng-style="getScrollStyle()">'
             +'<li ng-keydown="bootstrapSelectKeydown($event, gender)" ng-show="!searching || (searching && partialMatch(gender))" ng-repeat="gender in genders" role="presentation"><a style="padding-left:0.3em" role="button" ng-click="select(gender)" tabindex="-1"><span ng-show="isSelected(gender)" class="glyphicon glyphicon-ok pull-left" aria-hidden="true"></span><span ng-style="getStyle(gender)">{{gender}}</span></a></li>'
             +'</ul></div><input type="text" ng-keydown="bootstrapInputKeydown($event)" ng-blur="bootstrapInputBlur()" ng-change="bootstrapTyping()" class="form-control" ng-model="data.selectValue" aria-label="Gender"></div>'
       };

@@ -13,7 +13,8 @@
             useSource: '=?',
             buttonId: '=?',
             useSearching: '=?',
-            scrollableHeight: '=?'
+            scrollableHeight: '=?',
+            hideGlyphicon: '=?'
         },
         link: function (scope, element, attrs) {
             scope.toggleDropdown = function(force) {
@@ -144,6 +145,8 @@
                 $scope.withBootstrapJs = false;
             if (typeof $scope.useSearching === "undefined")
                 $scope.useSearching = true;
+            if (typeof $scope.scrollableHeight === "undefined")
+                $scope.scrollableHeight = "200px;"
             if (typeof $scope.buttonId === "undefined")
                 $scope.buttonId = "genderDropdownButton"+Math.floor(Math.random()*999);
             $scope.genders = [];
@@ -207,10 +210,10 @@
             +'<option ng-repeat="gender in genders" value="{{gender}}" ng-selected="data.selectValue==gender">{{gender}}</option>'
             +'</select>'
             +'<input ng-class="{{selectClasses}}" ng-model="data.selectValue" ng-if="!(withBootstrap || withBootstrapJs)" ng-show="useTextField===true"/>'
-            +'<div ng-if="withBootstrap || withBootstrapJs" class="input-group"><div class="input-group-btn"><button type="button" class="btn btn-default dropdown-toggle" id="{{buttonId}}" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()" ng-keydown="bootstrapButtonKeydown($event)">Select <span class="caret"></span></button>'
+            +'<div class="has-feedback" ng-if="withBootstrap || withBootstrapJs"><div class="input-group"><div class="input-group-btn"><button type="button" class="btn btn-default dropdown-toggle" id="{{buttonId}}" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" ng-click="toggleDropdown()" ng-keydown="bootstrapButtonKeydown($event)">Select <span class="caret"></span></button>'
             +'<ul aria-labelledby="{{buttonId}}" class="dropdown-menu" role="menu" ng-style="getScrollStyle()">'
             +'<li ng-keydown="bootstrapSelectKeydown($event, gender)" ng-show="!searching || (searching && partialMatch(gender))" ng-repeat="gender in genders" role="presentation"><a style="padding-left:0.3em" role="button" ng-click="select(gender)" tabindex="-1"><span ng-show="isSelected(gender)" class="glyphicon glyphicon-ok pull-left" aria-hidden="true"></span><span ng-style="getStyle(gender)">{{gender}}</span></a></li>'
-            +'</ul></div><input type="text" ng-keydown="bootstrapInputKeydown($event)" ng-blur="bootstrapInputBlur()" ng-change="bootstrapTyping()" class="form-control" ng-model="data.selectValue" aria-label="Gender"></div>'
+            +'</ul></div><input type="text" ng-keydown="bootstrapInputKeydown($event)" ng-blur="bootstrapInputBlur()" ng-change="bootstrapTyping()" class="form-control" ng-model="data.selectValue" aria-label="Gender"></div><span ng-hide="hideGlyphicon" class="glyphicon glyphicon-pencil form-control-feedback"></span></div>'
       };
     })
 })();

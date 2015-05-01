@@ -22,19 +22,20 @@ The directive comes built-in with genders from [satsukitv/genders](https://githu
 
 #### Manually
 
-* [Download the repo](https://github.com/bower/bower.json-spec/archive/master.zip)
+* [Download the repo](https://github.com/satsukitv/angular-gender-field/archive/master.zip)
 * Include gender-field.js an accessible location
 * Requires: AngularJS
 * Optional: Bootstrap, jQuery (for dropdown.js behavior)
 
 ## How To Use
-* Include the script in your html
+* Include the script in your html.
 ```html
 <script type="text/javascript" src="gender-field.js"></script>
+<script type="text/javascript" src="genders.js"></script> <!-- optional bower dependency -->
 ```
-* Include in your module declaration
+* Include `gender-field` and optionally `genders` in your module dependencies.
 ```javascript
-angular.module('myModule', ['gender-field'])
+angular.module('myModule', ['gender-field', 'genders'])
 ```
 * Use the directive as an element. Bind the value to your model using `ngModel`.
 ```html

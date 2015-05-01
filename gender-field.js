@@ -1,6 +1,13 @@
 (function() {
+    'use strict';
     var app = angular.module('gender-field', []);
-    app.directive('genderField', function($document, $timeout) {
+    try
+    {
+        //Check if genders module is available
+        angular.module('gender-field').requires.push('genders');
+    }
+    catch(e){}
+    app.directive('genderField', function($document, $timeout, $injector) {
       return {
         restrict: 'E',
         require: 'ngModel',
@@ -152,9 +159,11 @@
             $scope.genders = [];
             $scope.data = {selectValue: $scope.ngModel};
 
-
-            
-
+            var $genders = null;
+            try {
+                $genders = $injector.get('genders');
+            }
+            catch(e) {}
             if ($scope.useSource) {
                 if (Array.isArray($scope.useSource)) {
                     $scope.genders = $scope.useSource;
@@ -164,6 +173,9 @@
                         $scope.genders = response;
                     });
                 }
+            }
+            else if ($genders) {
+                $scope.genders = $genders;
             }
             else {
                 $scope.genders = 

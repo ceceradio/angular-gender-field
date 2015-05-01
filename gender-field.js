@@ -1,12 +1,6 @@
 (function() {
     'use strict';
     var app = angular.module('gender-field', []);
-    try
-    {
-        //Check if genders module is available
-        angular.module('gender-field').requires.push('genders');
-    }
-    catch(e){}
     app.directive('genderField', function($document, $timeout, $injector) {
       return {
         restrict: 'E',
